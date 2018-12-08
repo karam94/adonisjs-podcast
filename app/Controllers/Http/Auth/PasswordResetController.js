@@ -8,16 +8,16 @@ const Encryption = use('Encryption')
 const Event = use('Event')
 
 class PasswordResetController {
-    showLinkRequestForm({view}) {
+    showLinkRequestForm({ view }) {
         return view.render('auth.passwords.email')
     }
 
-    async sendResetLinkEmail ({ request, session, response }) {
+    async sendResetLinkEmail({ request, session, response }) {
         const validation = await validate(request.input('email'), {
             email: 'required|email'
         })
 
-        if(validation.fails()) {
+        if (validation.fails()) {
             session.withErrors(validation.messages()).flashAll()
 
             return response.redirect('back')
@@ -30,7 +30,7 @@ class PasswordResetController {
                 .where('user_id', user.id)
                 .where('type', 'password')
                 .delete()
-            
+
             const token = new Token()
             token.token = Encryption.encrypt(randToken.generate(16))
             token.type = 'password'
@@ -63,11 +63,11 @@ class PasswordResetController {
         return response.redirect('back')
     }
 
-    showResetForm ({ view, params }) {
+    showResetForm({ view, params }) {
         return view.render('auth/passwords/reset', { token: params.token })
     }
 
-    async reset ({ request, session, response }) {
+    async reset({ request, session, response }) {
         const validation = await validateAll(request.all(), {
             token: 'required',
             password: 'required|confirmed'
