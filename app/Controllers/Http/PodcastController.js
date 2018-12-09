@@ -45,6 +45,12 @@ class PodcastController {
         return response.route('myPodcast')
     }
 
+    async show({ params, view, request }) {
+        const podcast = await Podcast.query().where('slug', params.slug).with('podcaster').first()
+
+        return view.render('podcasts.show', { podcast: podcast.toJSON() })
+    }
+
     async edit({ view, params }) {
         const podcast = await Podcast.findOrFail(params.id)
         const categories = await Category.pair('id', 'name')
@@ -92,7 +98,7 @@ class PodcastController {
     async destroy({ params, response, session, auth }) {
         const podcast = await Podcast.find(params.id)
 
-        if (auth.user.id != podcast.user_id){
+        if (auth.user.id != podcast.user_id) {
             session.flash({
                 notification: {
                     type: 'danger',

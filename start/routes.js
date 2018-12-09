@@ -36,3 +36,4 @@ Route.resource('podcasts', 'PodcastController').except(['index', 'show']).valida
     [['podcasts.update'], ['UpdatePodcast']]
 ]))
 Route.get('my-podcast', 'UserController.myPodcast').as('myPodcast')
+Route.get('/:slug', 'PodcastController.show').as('podcasts.show')
