@@ -15,8 +15,7 @@
 
 const Route = use('Route')
 
-Route.get('/', 'TestController.index').as('home')
-
+Route.get('/', 'HomeController.index').as('home')
 Route.get('register', 'Auth/RegisterController.showRegister')
 Route.post('register', 'Auth/RegisterController.register').as('register')
 Route.get('login', 'Auth/LoginController.showLogin')
@@ -32,3 +31,6 @@ Route.group(() => {
     Route.get('/password', 'UserController.showChangePassword').as('settings.password')
     Route.put('/password', 'UserController.updatePassword')
 }).prefix('/settings')
+Route.resource('podcasts', 'PodcastController').except(['index', 'show']).validator(new Map([
+    [['podcasts.store'], ['StorePodcast']]
+]))

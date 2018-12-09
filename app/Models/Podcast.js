@@ -4,6 +4,16 @@
 const Model = use('Model')
 
 class Podcast extends Model {
+    static boot () {
+        super.boot()
+
+        this.addTrait('@provider:Lucid/Slugify', {
+            fields: { slug: 'title'},
+            strategy: 'dbIncrement',
+            disableUpdates: false
+        })
+    }
+
     podcaster () {
         return this.belongsTo('App/Models/User')
     }
