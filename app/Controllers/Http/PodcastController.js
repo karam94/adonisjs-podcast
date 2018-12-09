@@ -89,6 +89,32 @@ class PodcastController {
         return response.route('myPodcast')
     }
 
+    async destroy({ params, response, session, auth }) {
+        const podcast = await Podcast.find(params.id)
+
+        if (auth.user.id != podcast.user_id){
+            session.flash({
+                notification: {
+                    type: 'danger',
+                    message: 'You can only delete your own podcast.'
+                }
+            })
+
+            return response.route('myPodcast')
+        }
+
+        await podcast.delete()
+
+        session.flash({
+            notification: {
+                type: 'success',
+                message: 'Podcast deleted!'
+            }
+        })
+
+        return response.route('myPodcast')
+    }
+
     async _processLogoUpload(request) {
         const logo = request.file('logo', {
             types: ['image'],
