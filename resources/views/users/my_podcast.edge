@@ -1,0 +1,69 @@
+@layout('layouts.app')
+
+@section('content')
+  @set('title', 'My Podcast')
+
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-three-fifths is-offset-one-fifth">
+          <h2 class="title">My Podcast</h2>
+
+          <hr>
+
+          @include('partials._notification')
+
+          @if(podcast)
+            <div class="media">
+              <figure class="media-left">
+                <div class="image is-96x96">
+                  <img src="{{ assetsUrl(podcast.logo) }}" alt="Podcast logo">
+                </div>
+              </figure>
+              <div class="media-content">
+                <div class="content">
+                  <h3>{{ podcast.title }}</h3>
+                  <p>
+                    {{ podcast.description }}
+                  </p>
+                </div>
+
+                <nav class="level">
+                  <div class="level-left">
+                    <a class="level-item" href="{{ route('podcasts.show', { slug: podcast.slug }) }}" target="_blank">
+                      <span class="icon is-small">
+                        <i class="fas fa-external-link-alt"></i>
+                      </span>
+                    </a>
+                    <a class="level-item" href="{{ route('podcasts.edit', { id: podcast.id }) }}">
+                      <span class="icon is-small">
+                        <i class="fas fa-edit"></i>
+                      </span>
+                    </a>
+                    <a class="level-item" onclick="event.preventDefault(); document.getElementById('delete-podcast').submit();">
+                      <span class="icon is-small">
+                        <i class="fas fa-trash-alt"></i>
+                      </span>
+                    </a>
+                    <form id="delete-podcast" action="{{ '/podcasts/' + podcast.id + '?_method=DELETE' }}" method="post">
+                      {{ csrfField() }}
+                    </form>
+                  </div>
+                </nav>
+              </div>
+              <div class="media-right">
+                <a class="button is-primary" href="{{ route('episodes.create', { slug: podcast.slug }) }}">
+                  Upload Episode
+                </a>
+              </div>
+            </div>
+          @else
+            <a class="button is-primary" href="{{ route('podcasts.create') }}">
+              Create Podcast
+            </a>
+          @endif
+        </div>
+      </div>
+    </div>
+  </section>
+@endsection
