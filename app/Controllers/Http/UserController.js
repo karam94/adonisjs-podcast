@@ -4,10 +4,16 @@ const { validateAll } = use('Validator')
 const Hash = use('Hash')
 
 class UserController {
-    async myPodcast({view, auth}) {
+    async myPodcast({ view, auth }) {
         const podcast = await auth.user.podcast().fetch()
 
         return view.render('users.my_podcast', { podcast })
+    }
+
+    async subscriptions({ view, auth }) {
+        const subscriptions = await auth.user.subscriptions().fetch()
+
+        return view.render('users/subscriptions', { subscriptions: subscriptions.toJSON() })
     }
 
     showEditAccount({ view }) {
