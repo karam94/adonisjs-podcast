@@ -38,6 +38,7 @@ Route.resource('podcasts', 'PodcastController').except(['index', 'show']).valida
 Route.get('my-podcast', 'UserController.myPodcast').as('myPodcast')
 Route.group(() => {
     Route.post('/', 'SubscriptionController.subscribe').as('subscriptions.store')
+    Route.delete('/:id', 'SubscriptionController.unsubscribe').as('subscriptions.destroy')
 }).prefix('subscriptions')
 Route.get('/categories/:slug', 'CategoryController.show').as('categories.show')
 Route.get('/:slug', 'PodcastController.show').as('podcasts.show')

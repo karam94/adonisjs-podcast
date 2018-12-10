@@ -17,6 +17,21 @@ class SubscriptionController {
 
         return response.redirect('back')
     }
+
+    async unsubscribe({ params, auth, session, response }) {
+        const podcast = await Podcast.findOrFail(params.id)
+
+        await auth.user.subscriptions().detach(podcast.id)
+
+        session.flash({
+            notification: {
+                type: 'success',
+                message: `You've been unsubscribed to this podcast.`
+            }
+        })
+
+        return response.redirect('back')
+    }
 }
 
 module.exports = SubscriptionController

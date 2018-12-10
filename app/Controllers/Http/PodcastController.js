@@ -4,6 +4,7 @@ const Category = use('App/Models/Category')
 const Podcast = use('App/Models/Podcast')
 const Helpers = use('Helpers')
 const uuid = require('uuid/v4')
+const Database = use('Database')
 
 class PodcastController {
     async create({ view }) {
@@ -48,7 +49,9 @@ class PodcastController {
     async show({ params, view, request }) {
         const podcast = await Podcast.query().where('slug', params.slug).with('podcaster').first()
 
-        return view.render('podcasts.show', { podcast: podcast.toJSON() })
+        const subscriptions = await Database.table('subscriptions').where('podcast_id', podcast.id).pluck('user_id')
+
+        return view.render('podcasts.show', { podcast: podcast.toJSON(), subscriptions })
     }
 
     async edit({ view, params }) {
