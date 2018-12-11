@@ -41,5 +41,8 @@ Route.group(() => {
     Route.post('/', 'SubscriptionController.subscribe').as('subscriptions.store')
     Route.delete('/:id', 'SubscriptionController.unsubscribe').as('subscriptions.destroy')
 }).prefix('subscriptions')
+Route.get('/:slug/episodes/create', 'EpisodeController.create').as('episodes.create')
+Route.post('/:slug/episodes', 'EpisodeController.store').as('episodes.store')
+
 Route.get('/categories/:slug', 'CategoryController.show').as('categories.show')
 Route.get('/:slug', 'PodcastController.show').as('podcasts.show')
