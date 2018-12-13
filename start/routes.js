@@ -16,14 +16,22 @@
 const Route = use('Route')
 
 Route.get('/', 'HomeController.index').as('home')
-Route.get('register', 'Auth/RegisterController.showRegister')
+
+Route.get('register', 'Auth/RegisterController.showRegister').middleware(['guest'])
+
 Route.post('register', 'Auth/RegisterController.register').as('register')
-Route.get('login', 'Auth/LoginController.showLogin')
+
+Route.get('login', 'Auth/LoginController.showLogin').middleware(['guest'])
+
 Route.post('login', 'Auth/LoginController.login').as('login')
 Route.post('logout', 'Auth/LogoutController.logout').as('logout')
-Route.get('password/reset', 'Auth/PasswordResetController.showLinkRequestForm')
+
+Route.get('password/reset', 'Auth/PasswordResetController.showLinkRequestForm').middleware(['guest'])
+
 Route.post('password/email', 'Auth/PasswordResetController.sendResetLinkEmail')
-Route.get('password/reset/:token', 'Auth/PasswordResetController.showResetForm')
+
+Route.get('password/reset/:token', 'Auth/PasswordResetController.showResetForm').middleware(['guest'])
+
 Route.post('password/reset', 'Auth/PasswordResetController.reset')
 
 Route.group(() => {
