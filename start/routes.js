@@ -48,7 +48,8 @@ Route.resource('podcasts', 'PodcastController')
     [['podcasts.update'], ['UpdatePodcast']]
 ])).middleware(
     new Map([
-        [['create', 'store', 'update', 'destroy'], ['auth']]
+        [['create', 'store', 'update', 'destroy'], ['auth']],
+        [['create', 'store'], ['canOnlyCreateAPodcast']]
     ])
 )
 
