@@ -25,24 +25,35 @@ Route.get('password/reset', 'Auth/PasswordResetController.showLinkRequestForm')
 Route.post('password/email', 'Auth/PasswordResetController.sendResetLinkEmail')
 Route.get('password/reset/:token', 'Auth/PasswordResetController.showResetForm')
 Route.post('password/reset', 'Auth/PasswordResetController.reset')
+
 Route.group(() => {
     Route.get('/account', 'UserController.showEditAccount').as('settings.account')
     Route.put('/account', 'UserController.updateAccount')
     Route.get('/password', 'UserController.showChangePassword').as('settings.password')
     Route.put('/password', 'UserController.updatePassword')
-}).prefix('/settings')
-Route.resource('podcasts', 'PodcastController').except(['index', 'show']).validator(new Map([
+}).prefix('/settings').middleware(['auth'])
+
+Route.resource('podcasts', 'PodcastController')
+.except(['index', 'show'])
+.validator(new Map([
     [['podcasts.store'], ['StorePodcast']],
     [['podcasts.update'], ['UpdatePodcast']]
-]))
-Route.get('my-podcast', 'UserController.myPodcast').as('myPodcast')
-Route.get('/subscriptions', 'UserController.subscriptions').as('subscriptions')
+])).middleware(
+    new Map([
+        [['create', 'store', 'update', 'destroy'], ['auth']]
+    ])
+)
+
+Route.get('my-podcast', 'UserController.myPodcast').as('myPodcast').middleware(['auth'])
+Route.get('/subscriptions', 'UserController.subscriptions').as('subscriptions').middleware(['auth'])
+
 Route.group(() => {
     Route.post('/', 'SubscriptionController.subscribe').as('subscriptions.store')
     Route.delete('/:id', 'SubscriptionController.unsubscribe').as('subscriptions.destroy')
-}).prefix('subscriptions')
-Route.get('/:slug/episodes/create', 'EpisodeController.create').as('episodes.create')
-Route.post('/:slug/episodes', 'EpisodeController.store').as('episodes.store')
+}).prefix('subscriptions').middleware(['auth'])
+
+Route.get('/:slug/episodes/create', 'EpisodeController.create').as('episodes.create').middleware(['auth'])
+Route.post('/:slug/episodes', 'EpisodeController.store').as('episodes.store').middleware(['auth'])
 Route.get('/:slug/episodes/:id', 'EpisodeController.download').as('episodes.download')
 Route.get('/categories/:slug', 'CategoryController.show').as('categories.show')
 Route.get('/:slug', 'PodcastController.show').as('podcasts.show')
