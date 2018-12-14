@@ -20,7 +20,7 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async handle (error, { session, response }) {
+  async handle (error, { session, response, view }) {
     if (error.name == 'InvalidSessionException') {
       session.flash({
         notification: {
@@ -36,6 +36,10 @@ class ExceptionHandler extends BaseExceptionHandler {
 
     if (error.name == 'HttpException') {
       return response.route('home')
+    }
+
+    if (error.status == 404) {
+      return response.send(view.render('errors.404'))
     }
 
     return super.handle(...arguments)

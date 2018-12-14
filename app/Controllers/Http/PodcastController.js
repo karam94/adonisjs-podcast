@@ -46,8 +46,8 @@ class PodcastController {
         return response.route('myPodcast')
     }
 
-        async show({ params, view, request }) {
-        const podcast = await Podcast.query().where('slug', params.slug).with('podcaster').first()
+    async show({ params, view, request }) {
+        const podcast = await Podcast.query().where('slug', params.slug).with('podcaster').firstOrFail()
 
         const subscriptions = await Database.table('subscriptions').where('podcast_id', podcast.id).pluck('user_id')
 
