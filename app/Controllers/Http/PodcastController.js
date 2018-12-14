@@ -51,7 +51,7 @@ class PodcastController {
 
         const subscriptions = await Database.table('subscriptions').where('podcast_id', podcast.id).pluck('user_id')
 
-        const episodes = await podcast.episodes().orderBy('id', 'desc').fetch()
+        const episodes = await podcast.episodes().orderBy('id', 'desc').paginate(Number(request.input('page', 1)), 1)
 
         return view.render('podcasts.show', { podcast: podcast.toJSON(), subscriptions, episodes: episodes.toJSON() })
     }
