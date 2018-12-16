@@ -1,36 +1,36 @@
-'use strict'
+"use strict";
 
 /** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
-const Model = use('Model')
+const Model = use("Model");
 
 class Podcast extends Model {
-    static boot () {
-        super.boot()
+  static boot() {
+    super.boot();
 
-        this.addTrait('@provider:Lucid/Slugify', {
-            fields: { slug: 'title'},
-            strategy: 'dbIncrement',
-            disableUpdates: false
-        })
-    }
+    this.addTrait("@provider:Lucid/Slugify", {
+      fields: { slug: "title" },
+      strategy: "dbIncrement",
+      disableUpdates: false
+    });
+  }
 
-    podcaster () {
-        return this.belongsTo('App/Models/User')
-    }
+  podcaster() {
+    return this.belongsTo("App/Models/User");
+  }
 
-    episodes () {
-        return this.hasMany('App/Models/Episode')
-    }
+  episodes() {
+    return this.hasMany("App/Models/Episode");
+  }
 
-    category () {
-        return this.belongsTo('App/Models/Category')
-    }
+  category() {
+    return this.belongsTo("App/Models/Category");
+  }
 
-    subscribers () {
-        return this.belongsToMany('App/Models/User')
-        .pivotTable('subscriptions')
-        .withTimestamps()
-      }
+  subscribers() {
+    return this.belongsToMany("App/Models/User")
+      .pivotTable("subscriptions")
+      .withTimestamps();
+  }
 }
 
-module.exports = Podcast
+module.exports = Podcast;

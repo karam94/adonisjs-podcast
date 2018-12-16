@@ -1,11 +1,11 @@
-'use strict'
+"use strict";
 
 class LogoutController {
-    async logout ({ auth, response }){
-        await auth.logout()
+  async logout({ auth, response }) {
+    await auth.logout();
 
-        return response.route('home')
-    }
+    return response.route("home");
+  }
 }
 
-module.exports = LogoutController
+module.exports = LogoutController;

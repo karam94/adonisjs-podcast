@@ -1,17 +1,17 @@
-'use strict'
+"use strict";
 
 class StorePodcast {
-  get validateAll () {
-    return true
+  get validateAll() {
+    return true;
   }
 
-  get rules () {
+  get rules() {
     return {
-      title: 'required',
-      category_id: 'required',
-      description: 'required'
-    }
+      title: "required",
+      category_id: "required",
+      description: "required"
+    };
   }
 }
 
-module.exports = StorePodcast
+module.exports = StorePodcast;

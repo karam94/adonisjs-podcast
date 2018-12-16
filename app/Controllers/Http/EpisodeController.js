@@ -10,7 +10,9 @@ class EpisodeController {
   async create({ view, params }) {
     const podcast = await Podcast.findByOrFail("slug", params.slug);
 
-    return view.render("episodes.create", { podcast: podcast.toJSON() });
+    return view.render("episodes.create", {
+      podcast: podcast.toJSON()
+    });
   }
 
   async store({ request, response, auth, session }) {
@@ -26,9 +28,14 @@ class EpisodeController {
       return response.redirect("back");
     }
 
-    const podcast = await Podcast.query().where("id", request.input("podcast_id")).withCount("episodes").first();
+    const podcast = await Podcast.query()
+      .where("id", request.input("podcast_id"))
+      .withCount("episodes")
+      .first();
 
-    const audio = request.file("audio", { type: ["mp3"] });
+    const audio = request.file("audio", {
+      type: ["mp3"]
+    });
     await audio.move(Helpers.publicPath("uploads/audios"), {
       name: `${podcast.slug}_${podcast.episodes_count + 1}.${audio.subtype}`
     });

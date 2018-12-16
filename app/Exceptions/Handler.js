@@ -1,6 +1,6 @@
-'use strict'
+"use strict";
 
-const BaseExceptionHandler = use('BaseExceptionHandler')
+const BaseExceptionHandler = use("BaseExceptionHandler");
 
 /**
  * This class handles all exceptions thrown during
@@ -20,29 +20,29 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async handle (error, { session, response, view }) {
-    if (error.name == 'InvalidSessionException') {
+  async handle(error, { session, response, view }) {
+    if (error.name == "InvalidSessionException") {
       session.flash({
         notification: {
-          type: 'danger',
-          message: 'You must login to proceed.'
+          type: "danger",
+          message: "You must login to proceed."
         }
-      })
+      });
 
-      await session.commit()
+      await session.commit();
 
-      return response.redirect('/login')
+      return response.redirect("/login");
     }
 
-    if (error.name == 'HttpException') {
-      return response.route('home')
+    if (error.name == "HttpException") {
+      return response.route("home");
     }
 
     if (error.status == 404) {
-      return response.send(view.render('errors.404'))
+      return response.send(view.render("errors.404"));
     }
 
-    return super.handle(...arguments)
+    return super.handle(...arguments);
   }
 
   /**
@@ -55,8 +55,7 @@ class ExceptionHandler extends BaseExceptionHandler {
    *
    * @return {void}
    */
-  async report (error, { request }) {
-  }
+  async report(error, { request }) {}
 }
 
-module.exports = ExceptionHandler
+module.exports = ExceptionHandler;

@@ -13,10 +13,6 @@
             "error",
             2
         ],
-        "linebreak-style": [
-            "error",
-            "windows"
-        ],
         "quotes": [
             "error",
             "double"
@@ -26,5 +22,10 @@
             "always"
         ]
     },
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "globals": {
+        "use": false,
+        "module": false,
+        "require": false
+    }
 }
